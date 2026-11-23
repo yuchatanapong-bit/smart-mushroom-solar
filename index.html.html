@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#174b38">
+<title>Smart Mushroom Solar Arduino | โรงเรือนเพาะเห็ดอัจฉริยะพลังงานแสงอาทิตย์</title>
+<style>
+:root{--green:#174b38;--green2:#26734e;--mint:#eaf5ed;--gold:#e7b85b;--ink:#20312a;--muted:#63736b;--paper:#fbfcf8;--line:#dce7dd}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;line-height:1.75}
+a{color:#176a49}header{background:linear-gradient(120deg,#103b2c,#26734e 65%,#78a96f);color:white;padding:22px max(5vw,20px) 64px}
+nav{display:flex;justify-content:space-between;align-items:center;gap:16px;max-width:1150px;margin:auto}.brand{font-weight:800;letter-spacing:.3px}.navlinks{display:flex;gap:15px;flex-wrap:wrap}.navlinks a{color:#fff;text-decoration:none;font-size:.9rem;opacity:.94}
+.hero{max-width:1150px;margin:55px auto 0;display:grid;grid-template-columns:1.3fr .7fr;gap:30px;align-items:center}.eyebrow{color:#ffe3a4;font-weight:700;letter-spacing:1.5px}.hero h1{font-size:clamp(2.1rem,5vw,4.2rem);line-height:1.16;margin:12px 0}.hero p{font-size:1.1rem;max-width:680px;color:#edf6ed}.hero-art{border:1px solid #ffffff55;background:#ffffff18;border-radius:28px;padding:25px;text-align:center;font-size:6rem;box-shadow:0 20px 60px #08291c55}.hero-art small{display:block;font-size:1rem;color:#f4f8ed}
+.btn{display:inline-block;background:var(--gold);color:#2e2b1e;text-decoration:none;font-weight:800;padding:11px 20px;border-radius:999px;margin-top:12px}
+main{max-width:1100px;margin:auto;padding:0 22px 70px}.intro{margin-top:-28px;position:relative;background:white;border-radius:20px;padding:22px 26px;box-shadow:0 12px 35px #173e2812;display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.stat strong{display:block;color:var(--green);font-size:1.25rem}.stat span{color:var(--muted);font-size:.9rem}
+section{padding-top:52px;scroll-margin-top:20px}.section-kicker{color:var(--green2);font-weight:800;font-size:.82rem;letter-spacing:1px}h2{font-size:clamp(1.55rem,3vw,2.2rem);line-height:1.3;color:var(--green);margin:6px 0 15px}h3{color:var(--green);margin:8px 0}p{margin:8px 0 14px}.lead{color:var(--muted);max-width:820px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{background:white;border:1px solid var(--line);border-radius:16px;padding:19px;box-shadow:0 5px 20px #193b2510}.icon{font-size:2rem}.card p,.muted{color:var(--muted);font-size:.95rem}
+.steps{counter-reset:step;display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.step{background:white;border:1px solid var(--line);border-radius:14px;padding:17px 18px 17px 58px;position:relative}.step:before{counter-increment:step;content:counter(step);position:absolute;left:16px;top:16px;background:var(--green);color:white;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-weight:800}
+table{width:100%;border-collapse:collapse;background:white;border-radius:12px;overflow:hidden;margin:15px 0}th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}th{background:var(--mint);color:var(--green)}tr:last-child td{border-bottom:0}
+.callout{background:#fff7e6;border-left:4px solid var(--gold);padding:15px 18px;border-radius:8px;margin:16px 0}.good{background:var(--mint);border-left:4px solid var(--green2);padding:15px 18px;border-radius:8px;margin:16px 0}
+.diagram{background:#102f25;color:#e8f4e9;padding:20px;border-radius:16px;overflow:auto;font: .9rem/1.7 ui-monospace,Consolas,monospace;white-space:pre}
+code{background:#edf3ed;padding:2px 5px;border-radius:5px}pre{white-space:pre;overflow:auto;background:#102f25;color:#e8f4e9;padding:20px;border-radius:14px;font-size:.87rem;line-height:1.6}
+ul{padding-left:23px}.tag{display:inline-block;background:var(--mint);color:var(--green);padding:3px 10px;border-radius:999px;font-size:.82rem;font-weight:700;margin:3px}
+footer{background:#103b2c;color:#e9f4e9;text-align:center;padding:30px 20px}footer p{margin:4px}
+@media(max-width:760px){.hero{grid-template-columns:1fr;margin-top:35px}.hero-art{font-size:4rem}.intro,.grid{grid-template-columns:1fr}.steps{grid-template-columns:1fr}.navlinks{display:none}header{padding-bottom:55px}main{padding-left:16px;padding-right:16px}th,td{padding:9px;font-size:.9rem}}
+</style>
+</head>
+<body>
+<header>
+<nav><div class="brand">🍄 SMART MUSHROOM SOLAR</div><div class="navlinks"><a href="#overview">ภาพรวม</a><a href="#equipment">อุปกรณ์</a><a href="#wiring">วงจร</a><a href="#code">โค้ด</a><a href="#test">ทดสอบ</a></div></nav>
+<div class="hero">
+<div><div class="eyebrow">โครงงาน STEM • เกษตรอัจฉริยะ • พลังงานสะอาด</div>
+<h1>โรงเรือนเพาะเห็ดอัจฉริยะ<br>พลังงานแสงอาทิตย์</h1>
+<p>Smart Mushroom Solar Arduino — ระบบตรวจวัดอุณหภูมิและความชื้น พร้อมควบคุมพัดลมระบายอากาศและระบบพ่นหมอกอัตโนมัติ ช่วยดูแลสภาพแวดล้อมในโรงเรือนเห็ด</p>
+<a class="btn" href="#overview">เริ่มอ่านบทความ ↓</a></div>
+<div class="hero-art" aria-label="ภาพประกอบโรงเรือนเห็ด">🍄☀️🌱<small>SMART FARMING • CLEAN ENERGY</small></div>
+</div>
+</header>
+<main>
+<div class="intro">
+<div class="stat"><strong>Arduino UNO</strong><span>หน่วยประมวลผลและควบคุม</span></div>
+<div class="stat"><strong>DHT22</strong><span>ตรวจวัดอุณหภูมิและความชื้น</span></div>
+<div class="stat"><strong>Solar 12V</strong><span>แหล่งพลังงานผ่านชุดควบคุมการชาร์จ</span></div>
+</div>
+
+<section id="overview"><div class="section-kicker">01 • PROJECT OVERVIEW</div><h2>แนวคิดและหลักการทำงาน</h2>
+<p class="lead">เห็ดต้องการสภาพแวดล้อมที่เหมาะสมต่อการเจริญเติบโต โดยอุณหภูมิและความชื้นมีผลต่อการออกดอกและคุณภาพของผลผลิต โครงงานนี้ใช้ไมโครคอนโทรลเลอร์อ่านค่าจากเซนเซอร์ แล้วสั่งอุปกรณ์ให้ทำงานตามเงื่อนไขที่กำหนด</p>
+<div class="grid">
+<div class="card"><div class="icon">🌡️</div><h3>ตรวจวัด</h3><p>DHT22 อ่านค่าอุณหภูมิและความชื้นสัมพัทธ์ภายในโรงเรือนเป็นระยะ</p></div>
+<div class="card"><div class="icon">🧠</div><h3>ประมวลผล</h3><p>Arduino UNO เปรียบเทียบค่าที่อ่านได้กับเกณฑ์ควบคุมที่ผู้ใช้ตั้งไว้</p></div>
+<div class="card"><div class="icon">💨</div><h3>ควบคุมอัตโนมัติ</h3><p>รีเลย์สั่งเปิด–ปิดพัดลมและปั๊มหรือวาล์วพ่นหมอกตามเงื่อนไข</p></div>
+</div>
+<div class="good"><b>หมายเหตุ:</b> ค่าอุณหภูมิและความชื้นเป้าหมายต้องปรับตามชนิดเห็ด ระยะการเจริญเติบโต และคำแนะนำของผู้เพาะปลูก ไม่ควรใช้ค่าเดียวกับเห็ดทุกชนิด</div>
+</section>
+
+<section id="equipment"><div class="section-kicker">02 • COMPONENTS</div><h2>รายการอุปกรณ์</h2>
+<table><thead><tr><th>อุปกรณ์</th><th>จำนวน</th><th>หน้าที่</th></tr></thead><tbody>
+<tr><td>Arduino UNO R3</td><td>1 บอร์ด</td><td>ควบคุมและประมวลผลระบบ</td></tr>
+<tr><td>เซนเซอร์ DHT22</td><td>1 ตัว</td><td>วัดอุณหภูมิและความชื้นสัมพัทธ์</td></tr>
+<tr><td>โมดูลรีเลย์ 2 ช่อง 5V</td><td>1 โมดูล</td><td>สั่งงานโหลดพัดลมและปั๊ม/วาล์ว</td></tr>
+<tr><td>พัดลม DC 12V</td><td>1 ตัว</td><td>ระบายอากาศ</td></tr>
+<tr><td>ปั๊มน้ำ DC 12V หรือโซลินอยด์วาล์ว</td><td>1 ชุด</td><td>จ่ายน้ำไปยังหัวพ่นหมอก</td></tr>
+<tr><td>แผงโซลาร์เซลล์ 12V nominal</td><td>1 แผง</td><td>ผลิตพลังงานไฟฟ้า</td></tr>
+<tr><td>Solar charge controller</td><td>1 เครื่อง</td><td>ควบคุมการชาร์จแบตเตอรี่</td></tr>
+<tr><td>แบตเตอรี่ 12V</td><td>1 ลูก</td><td>เก็บพลังงานสำรอง</td></tr>
+<tr><td>DC-DC buck converter 12V เป็น 5V</td><td>1 ตัว</td><td>จ่ายไฟ 5V ให้ Arduino และเซนเซอร์</td></tr>
+<tr><td>กล่องกันน้ำ สายไฟ ฟิวส์ ขั้วต่อ</td><td>ตามเหมาะสม</td><td>ป้องกันวงจรและจัดระเบียบสาย</td></tr>
+</tbody></table>
+</section>
+
+<section id="wiring"><div class="section-kicker">03 • WIRING</div><h2>ผังการต่อวงจรและตารางสาย</h2>
+<p class="lead">ผังนี้เป็นแนวทางสำหรับระบบต้นแบบที่ใช้โหลด DC 12V และรีเลย์ 2 ช่อง โดยต้องตรวจสอบแรงดัน กระแส และขั้วอุปกรณ์จริงก่อนต่อใช้งาน</p>
+<div class="diagram">แผงโซลาร์เซลล์
+      │
+      ▼
+Solar Charge Controller ◄────► แบตเตอรี่ 12V
+      │ LOAD / แบตเตอรี่
+      ├──────────────► Buck Converter 12V → 5V
+      │                         ├──► Arduino UNO (5V*)
+      │                         ├──► DHT22 (VCC)
+      │                         └──► Relay Module (VCC)
+      │
+แบตเตอรี่ 12V (+) ── ฟิวส์ ──┬──► Relay COM ช่อง 1
+                              └──► Relay COM ช่อง 2
+Relay NO ช่อง 1 ───────────────► พัดลม DC 12V (+)
+Relay NO ช่อง 2 ───────────────► ปั๊ม DC 12V (+)
+ขั้วลบโหลด ────────────────────► แบตเตอรี่ 12V (-)
+
+Arduino D2 ◄──── DHT22 DATA
+Arduino D7 ─────► Relay IN1 (พัดลม)
+Arduino D8 ─────► Relay IN2 (ปั๊ม)
+GND ทุกส่วนแรงดันต่ำร่วมกันตามคู่มือโมดูล</div>
+<table><thead><tr><th>จุดต่อ</th><th>ขาอุปกรณ์</th><th>ขา Arduino / แหล่งจ่าย</th></tr></thead><tbody>
+<tr><td>DHT22</td><td>VCC / DATA / GND</td><td>5V / D2 / GND</td></tr>
+<tr><td>Relay 2CH</td><td>VCC / GND / IN1 / IN2</td><td>5V / GND / D7 / D8</td></tr>
+<tr><td>Buck Converter</td><td>IN+ / IN−</td><td>12V+ ผ่านฟิวส์ / 12V−</td></tr>
+<tr><td>Buck Converter</td><td>OUT+ / OUT−</td><td>ปรับและวัดให้ได้ 5V ก่อนต่อ / GND</td></tr>
+<tr><td>โหลดช่อง 1</td><td>COM / NO</td><td>12V+ ผ่านฟิวส์ / ขั้วบวกพัดลม</td></tr>
+<tr><td>โหลดช่อง 2</td><td>COM / NO</td><td>12V+ ผ่านฟิวส์ / ขั้วบวกปั๊ม</td></tr>
+</tbody></table>
+<div class="callout"><b>ความปลอดภัยสำคัญ:</b> ติดตั้งฟิวส์ใกล้แบตเตอรี่ เลือกสายและรีเลย์ให้รองรับกระแสเริ่มต้นของมอเตอร์ ป้องกันน้ำกระเด็นเข้ากล่อง และแยกวงจรไฟฟ้าออกจากบริเวณเปียกชื้น ห้ามต่อไฟบ้าน AC เข้ากับวงจรทดลองโดยตรง หากต้องใช้โหลด AC ให้ช่างผู้มีความรู้ติดตั้งอุปกรณ์ป้องกันและฉนวนที่เหมาะสม</div>
+<p class="muted">*จ่ายไฟเข้าขา 5V ของ UNO ได้เฉพาะเมื่อแหล่งจ่ายเป็น 5V ที่ผ่านการปรับและตรวจวัดแล้วเท่านั้น ห้ามป้อน 12V เข้าขา 5V</p>
+</section>
+
+<section id="build"><div class="section-kicker">04 • ASSEMBLY</div><h2>ขั้นตอนการประกอบ</h2>
+<div class="steps">
+<div class="step"><b>เตรียมโครงสร้าง</b><br>ติดตั้งชั้นวางก้อนเห็ด พัดลม ท่อและหัวพ่นหมอกให้เหมาะกับขนาดโรงเรือน</div>
+<div class="step"><b>ติดตั้งระบบพลังงาน</b><br>ยึดแผงโซลาร์เซลล์ในตำแหน่งรับแสง ต่อแผงและแบตเตอรี่เข้าชุดควบคุมตามคู่มือผู้ผลิต</div>
+<div class="step"><b>ประกอบวงจรควบคุม</b><br>ติดตั้ง Arduino, DHT22, รีเลย์ และ Buck Converter ในกล่องป้องกันความชื้น</div>
+<div class="step"><b>ต่ออุปกรณ์ทำงาน</b><br>ต่อพัดลมและปั๊ม DC ผ่านหน้าสัมผัสรีเลย์ พร้อมติดตั้งฟิวส์และตรวจสอบขั้วไฟ</div>
+<div class="step"><b>อัปโหลดโปรแกรม</b><br>ติดตั้งไลบรารี DHT sensor library และ Adafruit Unified Sensor แล้วอัปโหลดโค้ด</div>
+<div class="step"><b>ทดสอบระบบ</b><br>ทดสอบเซนเซอร์ รีเลย์ พัดลม และระบบพ่นหมอกทีละส่วนก่อนใช้งานจริง</div>
+</div>
+</section>
+
+<section id="code"><div class="section-kicker">05 • ARDUINO IDE</div><h2>ตัวอย่างโค้ด Arduino</h2>
+<p class="lead">ตัวอย่างนี้กำหนดให้พัดลมทำงานเมื่ออุณหภูมิสูงกว่า 30°C และหยุดเมื่ออุณหภูมิลดต่ำกว่า 28°C ส่วนปั๊มทำงานเมื่อความชื้นต่ำกว่า 80% และหยุดเมื่อสูงกว่า 88% ใช้ hysteresis เพื่อลดการสั่งเปิด–ปิดถี่</p>
+<pre><code>#include &lt;DHT.h&gt;
+
+#define DHTPIN 2
+#define DHTTYPE DHT22
+#define FAN_RELAY 7
+#define MIST_RELAY 8
+
+// รีเลย์หลายรุ่นเป็น Active LOW
+const int RELAY_ON = LOW;
+const int RELAY_OFF = HIGH;
+
+DHT dht(DHTPIN, DHTTYPE);
+bool fanOn = false;
+bool mistOn = false;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(FAN_RELAY, OUTPUT);
+  pinMode(MIST_RELAY, OUTPUT);
+  digitalWrite(FAN_RELAY, RELAY_OFF);
+  digitalWrite(MIST_RELAY, RELAY_OFF);
+  dht.begin();
+}
+
+void loop() {
+  float humidity = dht.readHumidity();
+  float temperature = dht.readTemperature();
+
+  if (isnan(humidity) || isnan(temperature)) {
+    Serial.println("อ่านค่า DHT22 ไม่สำเร็จ");
+    delay(2000);
+    return;
+  }
+
+  // ควบคุมพัดลมด้วยช่วงเปิด-ปิด
+  if (temperature >= 30.0) fanOn = true;
+  if (temperature <= 28.0) fanOn = false;
+
+  // ควบคุมระบบพ่นหมอกด้วยช่วงเปิด-ปิด
+  if (humidity <= 80.0) mistOn = true;
+  if (humidity >= 88.0) mistOn = false;
+
+  digitalWrite(FAN_RELAY, fanOn ? RELAY_ON : RELAY_OFF);
+  digitalWrite(MIST_RELAY, mistOn ? RELAY_ON : RELAY_OFF);
+
+  Serial.print("Temperature: ");
+  Serial.print(temperature);
+  Serial.print(" C | Humidity: ");
+  Serial.print(humidity);
+  Serial.print(" % | Fan: ");
+  Serial.print(fanOn ? "ON" : "OFF");
+  Serial.print(" | Mist: ");
+  Serial.println(mistOn ? "ON" : "OFF");
+
+  delay(2000);
+}</code></pre>
+<div class="callout"><b>ก่อนใช้งาน:</b> ตรวจสอบว่ารีเลย์ของคุณเป็น Active LOW หรือ Active HIGH หากเป็น Active HIGH ให้สลับค่า <code>RELAY_ON</code> และ <code>RELAY_OFF</code> และปรับเกณฑ์ให้เหมาะกับชนิดเห็ดและการทดลองจริง โค้ดนี้เป็นตัวอย่างควบคุมพื้นฐาน ไม่ใช่ระบบป้องกันความเสียหาย</div>
+</section>
+
+<section id="test"><div class="section-kicker">06 • TEST & EVALUATION</div><h2>วิธีทดสอบและประเมินผล</h2>
+<table><thead><tr><th>รายการทดสอบ</th><th>วิธีทดสอบ</th><th>ผลที่คาดหวัง</th></tr></thead><tbody>
+<tr><td>เซนเซอร์ DHT22</td><td>เปรียบเทียบค่ากับเครื่องวัดอ้างอิง</td><td>อ่านค่าได้ต่อเนื่องและใกล้เคียงเครื่องอ้างอิง</td></tr>
+<tr><td>พัดลม</td><td>เพิ่มอุณหภูมิบริเวณเซนเซอร์อย่างปลอดภัย</td><td>รีเลย์สั่งพัดลมเมื่อถึงเกณฑ์ที่ตั้งไว้</td></tr>
+<tr><td>ระบบพ่นหมอก</td><td>ลดความชื้นจำลองหรือทดสอบตามเงื่อนไข</td><td>ปั๊มหรือวาล์วทำงานและหยุดตามเกณฑ์</td></tr>
+<tr><td>พลังงานแสงอาทิตย์</td><td>ตรวจแรงดันและสถานะชาร์จตามคู่มือ</td><td>แบตเตอรี่ได้รับการชาร์จอย่างเหมาะสม</td></tr>
+<tr><td>ทดสอบต่อเนื่อง</td><td>บันทึกอุณหภูมิ ความชื้น และเวลาทำงาน</td><td>ระบบทำงานเสถียร ไม่มีน้ำเข้ากล่องหรือสายร้อนผิดปกติ</td></tr>
+</tbody></table>
+<h3>แบบบันทึกผลการทดลอง</h3>
+<table><thead><tr><th>วันที่/เวลา</th><th>อุณหภูมิ (°C)</th><th>ความชื้น (%)</th><th>พัดลม</th><th>พ่นหมอก</th><th>หมายเหตุ</th></tr></thead><tbody>
+<tr><td>ตัวอย่าง 09:00</td><td>29.0</td><td>84</td><td>ปิด</td><td>ปิด</td><td>ค่าตัวอย่าง</td></tr>
+<tr><td>ตัวอย่าง 12:00</td><td>31.5</td><td>76</td><td>เปิด</td><td>เปิด</td><td>ค่าตัวอย่าง</td></tr>
+<tr><td>ตัวอย่าง 15:00</td><td>28.0</td><td>89</td><td>ปิด</td><td>ปิด</td><td>ค่าตัวอย่าง</td></tr>
+</tbody></table>
+<p class="muted">ตัวเลขในตารางเป็นข้อมูลสมมติเพื่อสาธิตรูปแบบการบันทึก ไม่ใช่ผลการทดลองจริง</p>
+</section>
+
+<section id="conclusion"><div class="section-kicker">07 • CONCLUSION</div><h2>ประโยชน์ที่คาดว่าจะได้รับ</h2>
+<ul><li>เรียนรู้การประยุกต์ใช้ Arduino และเซนเซอร์ในงานเกษตร</li><li>ลดการตรวจสอบสภาพแวดล้อมด้วยคนตลอดเวลา</li><li>ควบคุมพัดลมและระบบพ่นหมอกตามเงื่อนไขที่กำหนด</li><li>เรียนรู้การใช้พลังงานแสงอาทิตย์ร่วมกับแบตเตอรี่</li><li>ต่อยอดสู่ระบบบันทึกข้อมูล แจ้งเตือนผ่าน Wi-Fi และวิเคราะห์ผลผลิตได้</li></ul>
+<div class="good"><b>แนวทางพัฒนาต่อ:</b> เพิ่ม ESP32 สำหรับดูข้อมูลผ่านโทรศัพท์ บันทึกข้อมูลลงฐานข้อมูล เพิ่มเซนเซอร์ระดับน้ำ และระบบแจ้งเตือนเมื่อแบตเตอรี่ต่ำหรือเซนเซอร์ขัดข้อง</div>
+</section>
+</main>
+<footer><p><b>SMART MUSHROOM SOLAR ARDUINO</b></p><p>สื่อการเรียนรู้โครงงานเกษตรอัจฉริยะและพลังงานสะอาด</p><p>จัดทำเพื่อการศึกษา • ควรตรวจสอบอุปกรณ์และความปลอดภัยก่อนประกอบใช้งานจริง</p></footer>
+</body></html>
